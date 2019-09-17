@@ -21,7 +21,7 @@ WUPS is dependent upon REDCap's normal _Auto-suspend users after period of inact
 
 The module is configurable at the system level to allow the sending account, subject line, and body of the message to be customized. The message body supports parameter substitution like REDCap's data piping to allow messages to be customized with fields like `[username]`, `[user_firstname]`, `[user_lastname]`, `[login_link]`, `[days_until_suspension]` and `[suspension_date]`. The `[login_link]` is the REDCap login page.
 
-If the **Email Sender** field is left blank, the module will use the "Email Address of REDCap Administarator" set in Control Center > General Configuration; **if that field is also not set, emails will not be sent**.
+If the **Email Sender** field is left blank, the module will use the "Email Address of REDCap Administrator" set in Control Center > General Configuration; **if that field is also not set, emails will not be sent**.
 
 ### Email Configuration Example
 
