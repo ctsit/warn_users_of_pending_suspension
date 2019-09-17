@@ -35,6 +35,13 @@
     ],
     "system-settings" : [
         {
+            "key": "wups_sender",
+            "name": "Email Sender",
+            "required": false,
+            "type": "email",
+            "repeatable": false
+        },
+        {
             "key": "wups_subject",
             "name": "Email Subject",
             "required": false,
