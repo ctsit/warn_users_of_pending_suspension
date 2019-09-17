@@ -1,7 +1,7 @@
 {
     "name": "Warn Users of Pending Suspension",
     "namespace": "SuspensionWarning\\ExternalModule",
-    "description": "A REDCap external module that will warn users of pending suspensions and provide an easy opportunity to extend the life of REDCap accounts.",
+    "description": "A REDCap external module that will warn users of pending suspensions and provide an easy opportunity to extend the life of REDCap accounts. Version 3 adds a breaking change, please reconfigure the module.",
     "permissions": [
         "redcap_every_page_top"
     ],
@@ -37,7 +37,7 @@
         {
             "key": "wups_sender",
             "name": "Email Sender",
-            "required": false,
+            "required": true,
             "type": "email",
             "repeatable": false
         },

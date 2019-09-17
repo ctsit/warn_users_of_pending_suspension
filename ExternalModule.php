@@ -95,13 +95,8 @@ class ExternalModule extends AbstractExternalModule {
 						'to' => $row['user_email']
 					];
 
-					switch (self::sendEmail($user_info)) {
-                        case TRUE:
+					if (self::sendEmail($user_info)) {
                             $numNotificationsSent++;
-                            break;
-                        case 'configFail':
-                            $GLOBALS['redcapCronJobReturnMsg'] = "WUPS has not been configured with a valid email sender and no admin has been set in General Configuration. No notifications will be sent.";
-                            break 2; // break parent while loop
                     }
 				}
 			}
@@ -113,15 +108,10 @@ class ExternalModule extends AbstractExternalModule {
 
 	function sendEmail($user_info) {
 		$to = $user_info['to'];
-		$sender = $this->getSystemSetting("wups_sender") ?: $project_contact_email;
+		$sender = $this->getSystemSetting("wups_sender");
 		$subject = $this->getSystemSetting("wups_subject");
 		$body = $this->getSystemSetting("wups_body");
 		$login_link = APP_PATH_WEBROOT_FULL;
-
-        // notify via a cron message that a sender must be set
-        if (!$sender) {
-            return 'configFail';
-        }
 
 		$piping_pairs = [
 			'[username]' => $user_info['username'],
