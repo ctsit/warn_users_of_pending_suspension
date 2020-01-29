@@ -7,7 +7,6 @@
 namespace SuspensionWarning\ExternalModule;
 
 use ExternalModules\AbstractExternalModule;
-use ExternalModules\ExternalModules;
 use REDCap;
 use Logging;
 
@@ -94,7 +93,7 @@ class ExternalModule extends AbstractExternalModule {
 					) as my_user_info
 					where '$suspend_users_inactive_days' - DATEDIFF(NOW(), user_last_date) = '$day';";
 
-			$q = ExternalModules::query($sql);
+			$q = $this->query($sql);
 
 			while ($row = db_fetch_assoc($q))
 			{
