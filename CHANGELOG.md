@@ -2,7 +2,7 @@
 All notable changes to the REDCap Warn Users of Pending Suspension project will be documented in this file.
 
 
-## [2.0.2] - 2019-10-01
+## [2.0.3] - 2019-10-01
 ### Changed
 - Ensure project_contact_email is from global scope (Kyle Chesney)
 - Correct wording. (Marly Cormar)
