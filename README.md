@@ -90,23 +90,25 @@ To test WUPS, you need to turn on a few REDCap features it interacts with.  You 
     update redcap_config set value="1" where field_name = "suspend_users_inactive_send_email";
     update redcap_config set value="30" where field_name = "suspend_users_inactive_days";
 
-As this tool sends emails, make sure the field that will be used for the **Sender Email** address is configured correctly in your module configuration.
+This module has to be configured before you can do anything with it. The instructions that follow assume the module has been configured as described in _Email Configuration Example_ above. The _Days Before Suspension_ setting of `10, 12, 20` is especially important. As this tool sends emails, also make sure the field that will be used for the **Sender Email** address is configured correctly in your module configuration.
 
-You'll also need some test users.  To revise the set of test users `alice`, `bob`, `dan`, and `carol` to receive messages based on the above configuration, change their `user_lastlogin` and `user_lastactivity` dates as follows:
+You'll need some test users. Assuming you have a set of test users `alice`, `bob`, `carol`, and `dan` you can configure them to receive alerts _today_ by adjusting their `user_lastlogin` and `user_lastactivity` dates as follows:
 
     update redcap_user_information set user_lastlogin = date_add(now(), interval -22 day), user_lastactivity = date_add(now(), interval -10 day) where username='alice';
     update redcap_user_information set user_lastlogin = date_add(now(), interval -18 day), user_lastactivity = NULL where username='bob';
     update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day), user_lastactivity = date_add(now(), interval -25 day) where username='carol';
     update redcap_user_information set user_lastlogin = null, user_lastactivity = date_add(now(), interval -20 day) where username='dan';
 
+If you are testing REDCap under [redcap-docker-compose](https://github.com/123andy/redcap-docker-compose), the automatic table-based user creation tools can make these users for you. If you are testing under a [redcap_deployment](https://github.com/ctsit/redcap_deployment) Vagrant VM, the above set of test users can be created via the SQL file at [https://github.com/ctsit/redcap_deployment/blob/master/deploy/files/test\_with\_table\_based\_authentication.sql](https://github.com/ctsit/redcap_deployment/blob/master/deploy/files/test_with_table_based_authentication.sql). People testing in other environments will need to design their own set of test cases.
+
+To get the alerts from these test users, you'll want to update their email addresses with _your_ email address. e.g.,
+
     update redcap_user_information set user_email = 'you@example.org' where username in ("alice", "bob", "carol", "dan");
 
-When tested, each of the aforementioned users should get a message. FYI, the above set of test users can be created via the SQL file at [https://github.com/ctsit/redcap_deployment/blob/master/deploy/files/test\_with\_table\_based\_authentication.sql](https://github.com/ctsit/redcap_deployment/blob/master/deploy/files/test_with_table_based_authentication.sql). That SQL file works great for users of the redcap_deployment project. Other users might want to be cautious as the SQL makes some assumptions.
+The final step to facilitate testing is to adjust the frequency of the cron job. The external module framework monitors the cron configuration settings in a module's `config.json`. If you change the cron frequency in that file to 60 seconds, the EM framework will, shortly thereafter, do the same to the module's cron job:
 
-The final step to facilitate testing is to turn the frequency of the cron job up.  You'll need to change `cron_frequency` and `cron_max_run_time` so that the cron job runs more often. Here's the lazy developer's SQL method to do that:
+    "cron_frequency": "60",
 
-    update redcap_crons set cron_frequency = 60, cron_max_run_time = 10 where cron_name = "warn_users_account_suspension_cron";
+Turn that value back down to `86400` (that's the number of seconds in one day) when you are done to get back to the normal configuration.
 
-Revert the setting to the defaults with this SQL when you are done with testing:
-
-    update redcap_crons set cron_frequency = 86400, cron_max_run_time = 1200 where cron_name = "warn_users_account_suspension_cron";
+All of these SQL commands and more are rolled up in [developer_testing_commands.sql](developer_testing_commands.sql). Open this file in your favorite SQL tool and run the commands one section at a time to see the relevant database state.
