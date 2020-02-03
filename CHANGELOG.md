@@ -2,7 +2,16 @@
 All notable changes to the REDCap Warn Users of Pending Suspension project will be documented in this file.
 
 
-## [2.0.2] - 2019-10-01
+## [2.0.4] - 2020-02-03
+### Changed
+- Revise the developer testing instructions (Philip Chase)
+- Stop calling ExternalModules class directly to address an issue reported in REDCap 9.6.3 (Kyle Chesney)
+
+### Added
+- Add AUTHORS.md (Philip Chase)
+
+
+## [2.0.3] - 2019-10-01
 ### Changed
 - Ensure project_contact_email is from global scope (Kyle Chesney)
 - Correct wording. (Marly Cormar)
