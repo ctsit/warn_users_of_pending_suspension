@@ -1,6 +1,6 @@
 # REDCap Warn Users of Pending Suspension (WUPS)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3561123.svg)](https://doi.org/10.5281/zenodo.3561123)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3561122.svg)](https://doi.org/10.5281/zenodo.3561122)
 
 A REDCap external module that will warn users of pending suspensions and provide an easy opportunity to extend the life of REDCap accounts.
 
