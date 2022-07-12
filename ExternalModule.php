@@ -43,9 +43,6 @@ class ExternalModule extends AbstractExternalModule {
 			$sql = "update redcap_user_information set user_lastlogin = NOW() where username ='$username';";
 
 			db_query($sql);
-
-			// Logging event
-			Logging::logEvent($sql, "redcap_user_information", "MANAGE", $username, "username = '$username'", "Extend user suspension date.", "", "SYSTEM");
 		}
 
         if ($message) {
