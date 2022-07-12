@@ -40,7 +40,7 @@ class ExternalModule extends AbstractExternalModule {
 			$message = "Unable to extend account suspension time: you need to log in with your credentials.";
 		}
 		else {
-			$sql = "update redcap_user_information set user_lastactivity = NOW(), user_lastlogin = NOW() where username ='$username';";
+			$sql = "update redcap_user_information set user_lastlogin = NOW() where username ='$username';";
 
 			db_query($sql);
 
