@@ -5,10 +5,10 @@ update redcap_config set value="all" where field_name = "suspend_users_inactive_
 update redcap_config set value="1" where field_name = "suspend_users_inactive_send_email";
 update redcap_config set value="30" where field_name = "suspend_users_inactive_days";
 
-update redcap_user_information set user_lastlogin = date_add(now(), interval -22 day), user_lastactivity = date_add(now(), interval -10 day) where username='alice';
-update redcap_user_information set user_lastlogin = date_add(now(), interval -18 day), user_lastactivity = NULL where username='bob';
-update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day), user_lastactivity = date_add(now(), interval -25 day) where username='carol';
-update redcap_user_information set user_lastlogin = null, user_lastactivity = date_add(now(), interval -20 day) where username='dan';
+update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day) where username='alice';
+update redcap_user_information set user_lastlogin = date_add(now(), interval -18 day) where username='bob';
+update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day) where username='carol';
+update redcap_user_information set user_lastlogin = date_add(now(), interval -20 day) where username='dan';
 
 update redcap_user_information set user_email = 'pbc@ufl.edu' where username in ("admin","alice", "bob", "carol", "dan");
 
@@ -18,10 +18,10 @@ update redcap_crons set cron_frequency = 60, cron_max_run_time = 10 where cron_n
 update redcap_crons set cron_frequency = 60 where cron_id > 34;
 
 -- reset everyone's last login and last activity dates
-update redcap_user_information set user_lastlogin = date_add(now(), interval -22 day), user_lastactivity = date_add(now(), interval -10 day) where username='alice';
-update redcap_user_information set user_lastlogin = date_add(now(), interval -18 day), user_lastactivity = NULL where username='bob';
-update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day), user_lastactivity = date_add(now(), interval -25 day) where username='carol';
-update redcap_user_information set user_lastlogin = null, user_lastactivity = date_add(now(), interval -20 day) where username='dan';
+update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day) where username='alice';
+update redcap_user_information set user_lastlogin = date_add(now(), interval -18 day) where username='bob';
+update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day) where username='carol';
+update redcap_user_information set user_lastlogin = date_add(now(), interval -20 day) where username='dan';
 
 -- Verify the above query worked
 select * from (
