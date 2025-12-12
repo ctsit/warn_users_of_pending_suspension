@@ -1,5 +1,7 @@
 # REDCap Warn Users of Pending Suspension (WUPS)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3561122.svg)](https://doi.org/10.5281/zenodo.3561122)
+
 A REDCap external module that will warn users of pending suspensions and provide an easy opportunity to extend the life of REDCap accounts.
 
 ## Prerequisites
@@ -53,9 +55,9 @@ Implementing WUPS and/or activating REDCap account suspensions can require some 
 
 To avoid the chaos of hundreds of accounts getting prematurely suspended, you can run a few SQL queries to adjust the last login dates and last activity dates for your REDCap users.  Done correctly, you can use WUPS to warn these users of the pending suspension, allow interested REDCap users to renew their account, and let the rest suspend normally.
 
-The first step is to configure WUPS' _Days Before Suspension_.  In this example, we'll use `30, 15, 7, 3, 1`, but only the highest number affects our work. We've also set _Period of inactivity_ to 180 days. We want everyone who is approaching their date of suspension to receive every warning WUPS is configured to provide. To achieve that, _no one_ is allowed to be within 30 days of suspension when WUPS is turned on. This requires some accounts have their date of last login and last activity changed.
+The first step is to configure WUPS' _Days Before Suspension_.  In this example, we'll use `30, 15, 7, 3, 1`, but only the highest number affects our work. We've also set _Period of inactivity_ to 180 days. We want everyone who is approaching their date of suspension to receive every warning WUPS is configured to provide. To achieve that, _no one_ is allowed to be within 30 days of suspension when WUPS is turned on. This requires some accounts have their date of last login changed.
 
-To change the last login and last activity dates, we first need to identify who needs the change.  This query will return all the usernames of accounts that will expire within the next 30 days when _Period of inactivity_ is set to 180 days:
+To change the last login date, we first need to identify who needs the change.  This query will return all the usernames of accounts that will expire within the next 30 days when _Period of inactivity_ is set to 180 days:
 
     create temporary table old_users as (
     select * from (
@@ -72,11 +74,10 @@ To change the last login and last activity dates, we first need to identify who 
     where DATEDIFF(NOW(), user_last_date) > (180 - 30)
     );
 
-With that temporary table created, it is a simple matter to change `user_lastactivity` and `user_lastlogin` to a random date between 120 and 150 days.
+With that temporary table created, it is a simple matter to change `user_lastlogin` to a random date between 120 and 150 days.
 
     update redcap_user_information
-    set user_lastactivity = date_add(now(), INTERVAL FLOOR(-RAND() * 30  - 120) DAY),
-        user_lastlogin = date_add(now(), INTERVAL FLOOR(-RAND() * 30  - 120) DAY)
+    set user_lastlogin = date_add(now(), INTERVAL FLOOR(-RAND() * 30  - 120) DAY)
     where username in ( select username from old_users);
 
 This will make the WUPS warnings start in 0-30 days. If the warnings are unheeded, account suspensions will happen in 30-60 days.
@@ -84,7 +85,7 @@ This will make the WUPS warnings start in 0-30 days. If the warnings are unheede
 
 ## Developer testing techniques
 
-To test WUPS, you need to turn on a few REDCap features it interacts with.  You need to turn on "Auto-suspend users after period of inactivity" in Control Center, User Settings.  For our tests we also set "Period of inactivity" to 30 days.  A lazy developer might just want to run this SQL to make that happen:
+To test WUPS, you need to turn on a few REDCap features it interacts with.  You need to turn on "Auto-suspend users after period of inactivity" in Control Center, User Settings.  For our tests we also set "Period of inactivity" to 30 days. A lazy developer might just want to run this SQL to make that happen:
 
     update redcap_config set value="all" where field_name = "suspend_users_inactive_type";
     update redcap_config set value="1" where field_name = "suspend_users_inactive_send_email";
@@ -92,12 +93,12 @@ To test WUPS, you need to turn on a few REDCap features it interacts with.  You 
 
 This module has to be configured before you can do anything with it. The instructions that follow assume the module has been configured as described in _Email Configuration Example_ above. The _Days Before Suspension_ setting of `10, 12, 20` is especially important. As this tool sends emails, also make sure the field that will be used for the **Sender Email** address is configured correctly in your module configuration.
 
-You'll need some test users. Assuming you have a set of test users `alice`, `bob`, `carol`, and `dan` you can configure them to receive alerts _today_ by adjusting their `user_lastlogin` and `user_lastactivity` dates as follows:
+You'll need some test users. Assuming you have a set of test users `alice`, `bob`, `carol`, and `dan` you can configure them to receive alerts _today_ by adjusting their `user_lastlogin` date as follows:
 
-    update redcap_user_information set user_lastlogin = date_add(now(), interval -22 day), user_lastactivity = date_add(now(), interval -10 day) where username='alice';
-    update redcap_user_information set user_lastlogin = date_add(now(), interval -18 day), user_lastactivity = NULL where username='bob';
-    update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day), user_lastactivity = date_add(now(), interval -25 day) where username='carol';
-    update redcap_user_information set user_lastlogin = null, user_lastactivity = date_add(now(), interval -20 day) where username='dan';
+    update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day) where username='alice';
+    update redcap_user_information set user_lastlogin = date_add(now(), interval -18 day) where username='bob';
+    update redcap_user_information set user_lastlogin = date_add(now(), interval -10 day) where username='carol';
+    update redcap_user_information set user_lastlogin = date_add(now(), interval -20 day) where username='dan';
 
 If you are testing REDCap under [redcap-docker-compose](https://github.com/123andy/redcap-docker-compose), the automatic table-based user creation tools can make these users for you. If you are testing under a [redcap_deployment](https://github.com/ctsit/redcap_deployment) Vagrant VM, the above set of test users can be created via the SQL file at [https://github.com/ctsit/redcap_deployment/blob/master/deploy/files/test\_with\_table\_based\_authentication.sql](https://github.com/ctsit/redcap_deployment/blob/master/deploy/files/test_with_table_based_authentication.sql). People testing in other environments will need to design their own set of test cases.
 

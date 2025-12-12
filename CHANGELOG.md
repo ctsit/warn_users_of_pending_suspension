@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to the REDCap Warn Users of Pending Suspension project will be documented in this file.
 
+# warn_users_of_pending_suspension 2.0.5 (released 2025-12-12)
+- Add VERSION (@pbchase)
+- Do not log the event (@pbchase, #24)
+- Never set user_lastactivity (@pbchase, #23, #24)
+- Add DOI to README (@pbchase, #22)
 
 ## [2.0.4] - 2020-02-03
 ### Changed
