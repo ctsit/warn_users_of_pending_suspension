@@ -1,29 +1,27 @@
 {
     "name": "Warn Users of Pending Suspension",
-    "namespace": "SuspensionWarning\\ExternalModule",
+    "namespace": "UF_CTSI\\WarnUsersOfPendingSuspension",
     "description": "A REDCap external module that will warn users of pending suspensions and provide an easy opportunity to extend the life of REDCap accounts.",
+
     "permissions": [
         "redcap_every_page_top"
     ],
     "enable-every-page-hooks-on-system-pages": true,
     "authors": [
         {
-            "name": "Philip Chase",
-            "email": "pbc@ufl.edu",
-            "institution": "University of Florida - CTSI"
-        },
-        {
-            "name": "Taryn Stoffs",
-            "email": "tls@ufl.edu",
-            "institution": "University of Florida - CTSI"
-        },
-        {
-            "name": "Kyle Chesney",
-            "email": "kyle.chesney@ufl.edu",
+            "name": "University of Florida CTS-IT",
+            "email": "CTSIT-REDCAP-MODULE-SUPPO@LISTS.UFL.EDU",
             "institution": "University of Florida - CTSI"
         }
     ],
     "system-settings" : [
+        {
+            "key": "wups_update_user_lastlogin",
+            "name": "Update user_lastlogin on main REDCap pages",
+            "required": false,
+            "type": "checkbox",
+            "repeatable": false
+        },
         {
             "key": "use_wups_sender",
             "name": "Use Custom Email Sender",
@@ -74,9 +72,5 @@
             "cron_frequency": "86400",
             "cron_max_run_time": "1200"
         }
-    ],
-    "compatibility": {
-        "redcap-version-min": "8.0.3",
-        "redcap-version-max": ""
-   }
+    ]
 }
