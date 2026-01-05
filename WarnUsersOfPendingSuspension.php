@@ -1,33 +1,40 @@
 <?php
 /**
  * @file
- * Provides ExternalModule class for SuspensionWarning.
+ * Provides ExternalModule class for WarnUsersOfPendingSuspension.
  */
 
-namespace SuspensionWarning\ExternalModule;
+namespace UF_CTSI\WarnUsersOfPendingSuspension;
 
 use ExternalModules\AbstractExternalModule;
 use REDCap;
 use Logging;
 
 /**
- * ExternalModule class for SuspensionWarning.
+ * ExternalModule class for WarnUsersOfPendingSuspension.
  */
-class ExternalModule extends AbstractExternalModule {
+class WarnUsersOfPendingSuspension extends AbstractExternalModule {
  	/**
      * @inheritdoc
      */
-    function redcap_every_page_top($project_id)
+    function redcap_every_page_top($project_id = null)
     {
-        $is_on_log_page = preg_match("/(redcap\/\z|\/index.php\?action=myprojects\z)/", PAGE);
+		# Check if we are on the index page and there are no parameters
+		# If so, extend the suspension time for the user
+		# Otherwise, do nothing and return
+		$is_on_index = preg_match("/index.php\z/", PAGE_FULL);
+		$no_parameters = (count($_GET) == 0);
 
-        $is_on_homepage = preg_match("/\/index.php\z/", PAGE);
-
-        if ($is_on_log_page || $is_on_homepage) {
+        if ($is_on_index && $no_parameters) {
             if(defined('USERID') && !empty(USERID)){
-                $this->extend_suspension_time(USERID);
+				$wups_update_user_lastlogin = $this->getSystemSetting('wups_update_user_lastlogin');
+				if($wups_update_user_lastlogin) {
+					$this->extend_suspension_time(USERID);
+				}
             }
-        }
+        } else {
+			return;
+		}
     }
 
     function extend_suspension_time($username='')
