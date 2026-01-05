@@ -54,7 +54,7 @@ from redcap_user_information
 order by user_lastlogin desc;
 ```
 
-Your username should be near the top of the list, `user_lastlogin` should reflect to precise time of your login. If `user_lastlogin` is not updating, access the system configuration of the WUPS moduled and check `Update user_lastlogin on main REDCap pages`. 
+Your username should be near the top of the list, `user_lastlogin` should reflect to precise time of your login. If `user_lastlogin` is not updating, access the system configuration of the WUPS module and check `Update user_lastlogin on main REDCap pages`. 
 
 ## How to Implement WUPS
 
