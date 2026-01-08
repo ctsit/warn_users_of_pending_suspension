@@ -47,9 +47,8 @@ class WarnUsersOfPendingSuspension extends AbstractExternalModule {
 			$message = "Unable to extend account suspension time: you need to log in with your credentials.";
 		}
 		else {
-			$sql = "update redcap_user_information set user_lastlogin = NOW() where username ='$username';";
-
-			db_query($sql);
+			# Update the user's last login time to now
+			$result = $this->query("update redcap_user_information set user_lastlogin = NOW() where username = ?;", [$username]);
 		}
 
         if ($message) {
@@ -95,9 +94,9 @@ class WarnUsersOfPendingSuspension extends AbstractExternalModule {
 					from redcap_user_information
 					where user_suspended_time is null
 					) as my_user_info
-					where '$suspend_users_inactive_days' - DATEDIFF(NOW(), user_last_date) = '$day';";
+					where ? - DATEDIFF(NOW(), user_last_date) = ?;";
 
-			$q = $this->query($sql);
+					$q = $this->query($sql, [$suspend_users_inactive_days, $day]);
 
 			while ($row = db_fetch_assoc($q))
 			{

@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3561122.svg)](https://doi.org/10.5281/zenodo.3561122)
 
-A REDCap external module that will warn users of pending suspensions and provide an easy opportunity to extend the life of REDCap accounts.
+A REDCap external module that warns users of pending account suspensions and provides a simple way for REDCap users to extend their account lifetimes.
 
 ## Installation
 - Obtain this module from the Consortium [REDCap Repo](https://redcap.vumc.org/consortium/modules/index.php) from the REDCap Control Center.
@@ -54,9 +54,11 @@ from redcap_user_information
 order by user_lastlogin desc;
 ```
 
-Your username should be near the top of the list, `user_lastlogin` should reflect the precise time of your login. If `user_lastlogin` is not updating, access the system configuration of the WUPS module and check `Update user_lastlogin on main REDCap pages`. 
+Your username should be near the top of the list and `user_lastlogin` should reflect the precise time of your login. If `user_lastlogin` is not updating, access the system configuration of the WUPS module and check `Update user_lastlogin on main REDCap pages`.
 
 ## How to Implement WUPS
+
+**Note:** If you have already enabled _Auto-suspend users after period of inactivity_, you can ignore this section. Otherwise, please read this section carefully.
 
 Implementing WUPS and/or activating REDCap account suspensions can require some careful planning to avoid annoying your users who have not logged in recently.  If you have never used account suspension on your REDCap host, activating it will cause all accounts that have not logged in within the _Period of inactivity_ to be suspended within 24 hours. If those people want their accounts reenabled they will have to ask the REDCap admin to reenable them.  That generates the kind of help desk workload WUPS was designed to _prevent_.
 
