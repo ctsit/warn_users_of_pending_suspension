@@ -1,11 +1,8 @@
 {
     "name": "Warn Users of Pending Suspension",
     "namespace": "UF_CTSI\\WarnUsersOfPendingSuspension",
-    "description": "A REDCap external module that will warn users of pending suspensions and provide an easy opportunity to extend the life of REDCap accounts.",
-
-    "permissions": [
-        "redcap_every_page_top"
-    ],
+    "description": "A REDCap external module that warns users of pending account suspensions and provides a simple way for REDCap users to extend their account lifetimes.",
+    "framework-version": 15,
     "enable-every-page-hooks-on-system-pages": true,
     "authors": [
         {
