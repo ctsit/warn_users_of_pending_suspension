@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to the REDCap Warn Users of Pending Suspension project will be documented in this file.
 
+# warn_users_of_pending_suspension 3.0.1 (released 2026-01-08)
+ - Update README.md (@pbchase)
+ - Upgrade to Framework 15 (@pbchase)
+
 # warn_users_of_pending_suspension 3.0.0 (released 2026-01-05)
 - Make extend_suspension_time() optional (@pbchase, #26, #28)
 - Replace AUTHORS.md with CITATION.cff (@pbchase, #25, #27, #28)
